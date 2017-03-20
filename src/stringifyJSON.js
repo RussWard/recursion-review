@@ -20,11 +20,15 @@ var stringifyJSON = function(obj) {
     if (Object.keys(obj).length === 0) {
       return '{}';
     } else {
-      var objectContents = Object.keys(obj).map(function(key) {
-        if (obj[key] !== undefined && typeof obj[key] !== 'function') {
-          return stringifyJSON(key) + ':' + stringifyJSON(obj[key]);
+      var objectContents = [];
+      var keys = Object.keys(obj);
+      for(var i = 0; i < keys.length; i++) {
+        if (obj[keys[i]] === undefined || typeof obj[keys[i]] === 'function') {
+          continue;
+        } else {
+          objectContents.push(stringifyJSON(keys[i]) + ':' + stringifyJSON(obj[keys[i]]));
         }
-      });
+      }
       return '{' + objectContents.join(',') + '}';
     } 
   } else {
